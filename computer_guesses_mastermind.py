@@ -13,8 +13,11 @@ def guess_computer(board):
 
 def guess_my_number_mastermind(board):
     feedback = ""
+    lives = 10
     while True:
         comp_guess = guess_computer(board)
+        print("Computer's guess:", comp_guess)
+        print(board[0] + board[1] + board[2] + board[3])
         feedback = input("Any correct digits in the right position (yes/no)? ").lower()
         if feedback == "yes" or feedback == "y":
             # Ask the user to input the correct digits
@@ -24,12 +27,15 @@ def guess_my_number_mastermind(board):
                 if board_check[i] != "_":
                     board[i] = board_check[i]
         elif feedback == "no" or feedback == "n":
-            print("Try again, Mike!")
+            lives -= 1
+            print('You have', lives, "left")
         else:
             print("Please enter 'yes' or 'no'.")
         # Check if the board matches the guess
         if "".join(board) == comp_guess:
             print(f"The computer guessed {comp_guess} correctly!")
+        elif lives == 0:
+            print("Sorry, you lost ")
             break
 
 board = ["_", "_", "_", "_"]
