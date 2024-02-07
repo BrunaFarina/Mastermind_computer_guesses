@@ -1,32 +1,36 @@
 import random
-board = ["_", "_", "_", "_"]
+
 def guess_computer(board):
-    value1 = str(random.randint(0, 9))
-    value3 = str(random.randint(0, 9))
-    value4 = str(random.randint(0, 9))
-    value2 = str(random.randint(0, 9))
-    guess = value1 + value2 + value3 + value4
+    # Generate a random guess
+    guess = ""
+    for i in range(4):
+        # If the digit is already guessed correctly, keep it the same
+        if board[i] != "_":
+            guess += board[i]
+        else:
+            guess += str(random.randint(0, 9))
     return guess
 
 def guess_my_number_mastermind(board):
     feedback = ""
-    board_check = []
-    comp_guess = ""
-    while board != comp_guess:
+    while True:
         comp_guess = guess_computer(board)
-        print(board[0] + board[1] + board[2] + board[3])
-        for i in range(0, len(comp_guess)):
-            if board[i] == comp_guess[i]:
-                board[i] = comp_guess[i]
-                comp_guess = "".join(str(x) for x in board)
-        feedback = input(f"Any correct digit in {comp_guess}? ")
+        feedback = input("Any correct digits in the right position (yes/no)? ").lower()
         if feedback == "yes" or feedback == "y":
-            board_check = input(f"Write the numbers here replacing (or maintaining) the underscores (ex: '_3_8'): ")
-            board = board_check
-        else:
+            # Ask the user to input the correct digits
+            board_check = input("Write the numbers here replacing (or maintaining) the underscores (e.g., '_3_8'): ")
+            # Update the board with correct digits
+            for i in range(4):
+                if board_check[i] != "_":
+                    board[i] = board_check[i]
+        elif feedback == "no" or feedback == "n":
             print("Try again, Mike!")
-    print(f"You got {comp_guess} correctly!")
-            #board = board.join(str(x) for x in board_check)
+        else:
+            print("Please enter 'yes' or 'no'.")
+        # Check if the board matches the guess
+        if "".join(board) == comp_guess:
+            print(f"The computer guessed {comp_guess} correctly!")
+            break
 
-
+board = ["_", "_", "_", "_"]
 guess_my_number_mastermind(board)
